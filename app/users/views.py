@@ -53,8 +53,8 @@ def register():
         # redirect user to the 'home' method of user module
         return redirect(url_for('users.home'))
     return render_template("users/register.html", form=form)
-
-# TODO
+# TODO Log out
+# TODO Fix user edit
 @users.route('edit/<user_id>', methods=['PUT', 'GET'])
 def edit(user_id):
     form = UserEditForm(request.form)

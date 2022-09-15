@@ -7,3 +7,8 @@ from app.users.decorators import requires_login
 products = Blueprint('products', __name__, url_prefix='/products')
 
 
+# TODO List of products in table
+# TODO Add product
+# TODO Edit product
+# TODO Search product
+# TODO Delete product
