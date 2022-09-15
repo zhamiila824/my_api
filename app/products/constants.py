@@ -1,7 +1,7 @@
 # Product status
-INACTIVE = 0
+DRAFT = 0
 ACTIVE = 1
 STATUS = {
-    INACTIVE: 'inactive',
+    DRAFT: 'draft',
     ACTIVE: 'active',
 }

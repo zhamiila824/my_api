@@ -1,5 +1,5 @@
 from app import db
-from app.users import constants as PRODUCT
+from app.products import constants as PRODUCT
 
 
 class Products(db.Model):
@@ -9,7 +9,7 @@ class Products(db.Model):
     product_name = db.Column(db.String(255))
     price = db.Column(db.Float)
     quantity = db.Column(db.Integer)
-    status = db.Column(db.SmallInteger, default=PRODUCT.INACTIVE)
+    status = db.Column(db.SmallInteger, default=PRODUCT.DRAFT)
 
     def __int__(self, product_name=None, price=None, quantity=None):
         self.product_name = product_name
