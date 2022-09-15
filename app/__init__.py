@@ -42,3 +42,13 @@ if not app.config['DEBUG']:
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+
+from app.users.views import users as usersModule
+
+app.register_blueprint(usersModule)
