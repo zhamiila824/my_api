@@ -2,11 +2,9 @@ from flask_wtf import Form
 from wtforms import EmailField, StringField, PasswordField, BooleanField, \
     RadioField, SelectField, SelectMultipleField, validators
 
-
 class LoginForm(Form):
     email = EmailField('Email:', [validators.DataRequired(), validators.Email()])
     password = PasswordField('Password:', [validators.DataRequired()])
-
 
 class RegisterForm(Form):
     username = StringField('Username:', [validators.DataRequired()])
@@ -40,4 +38,3 @@ class UserSearchForm(Form):
                      ('2', 'active')]
     select = SelectField('Search for users:', choices=choices)
     search = SelectMultipleField('')
-
