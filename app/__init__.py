@@ -1,7 +1,7 @@
 import os
 import sys
 
-from flask import Flask, render_template
+from flask import Flask, render_template, g, session
 from flask_sqlalchemy import SQLAlchemy
 
 
@@ -39,6 +39,21 @@ if not app.config['DEBUG']:
     install_secret_key(app)
 
 
+from app.users.models import User
+from app.users.views import users as usersModule
+from app.products.views import products as productsModule
+
+
+@app.before_request
+def before_request():
+    """
+    pull user's profile from database before every request
+    """
+    g.user = None
+    if 'user_id' in session:
+        g.user = User.query.get(session['user_id'])
+
+
 @app.errorhandler(404)
 def not_found(error):
     return render_template('404.html'), 404
@@ -49,6 +64,5 @@ def home():
     return render_template('index.html')
 
 
-from app.users.views import users as usersModule
-
 app.register_blueprint(usersModule)
+app.register_blueprint(productsModule)

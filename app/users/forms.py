@@ -20,15 +20,14 @@ class RegisterForm(Form):
 
 
 class UserEditForm(Form):
-    username = StringField('Username:', [validators.DataRequired()])
-    email = EmailField('Email:', [validators.DataRequired(), validators.Email()])
-    password = PasswordField('Password:', [validators.DataRequired()])
-    confirm = PasswordField('Repeat Password:', [
-        validators.DataRequired(),
-        validators.EqualTo('password', message='Passwords must match')
-    ])
-    role = RadioField('Role:', choices=[('0','admin'),('1','staff'),('2','user')])
-    status = RadioField('Status:', choices=[('0','inactive'),('1','new'),('2','active')])
+    username = StringField('New Username:')
+    email = EmailField('New Email:', [validators.Email()])
+    role = RadioField('New Role:', choices=[('0', 'admin'),
+                                            ('1', 'staff'),
+                                            ('2', 'user')])
+    status = RadioField('New Status:', choices=[('0', 'inactive'),
+                                                ('1', 'new'),
+                                                ('2', 'active')])
 
 
 class UserSearchForm(Form):
@@ -41,4 +40,4 @@ class UserSearchForm(Form):
                      ('1', 'new'),
                      ('2', 'active')]
     select = SelectField('Search for users:', choices=choices)
-    search = SelectMultipleField('')
+    search = SelectMultipleField('Select:', choices=roleChoices)
