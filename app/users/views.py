@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
-from app.users.forms import RegisterForm, LoginForm, UserSearchForm
+from app.users.forms import RegisterForm, LoginForm
 from app.users.models import User
 from app.users.decorators import requires_login
 from app.users.tables import UsersTable
@@ -20,6 +20,8 @@ def login():
     """
     Login form
     """
+    if g.user:
+        return redirect(url_for('users.home'))
     form = LoginForm(request.form)
     # checking that data is valid (except password)
     if request.method == 'POST' and form.validate():
@@ -39,6 +41,8 @@ def register():
     """
     Registartion Form
     """
+    if g.user:
+        return redirect(url_for('users.home'))
     form = RegisterForm(request.form)
     if request.method == 'POST' and form.validate():
         # create user instance, but not store in database yet
@@ -56,7 +60,6 @@ def register():
     return render_template("users/register.html", form=form)
 
 # TODO Log out
-# TODO Fix user edit
 
 
 def save_changes(user, form, new=False):
@@ -101,9 +104,6 @@ def edit(user_id):
 
 @users.route('/')
 def all_users():
-    users_result = []
-    # search_string = search.data['search']
-    # if search_string == '':
     qry = db.session.query(User)
     users_result = qry.all()
     if not users_result:
@@ -123,12 +123,12 @@ def delete(user_id):
     qry = db.session.query(User).filter(User.id == user_id)
     user = qry.first()
     if user:
-        form = UserEditForm(formdata=request.form, obj=user)
+        form = RegisterForm(formdata=request.form, obj=user)
         if request.method == 'POST' and form.validate():
             # delete the item from the database
             db.session.delete(user)
             db.session.commit()
             flash('User deleted successfully!')
             return redirect('/')
-        return render_template('delete_user.html', form=form)
+        return render_template('users/delete_user.html', form=form)
     return 'Error deleting #{id}'.format(id=user_id)
