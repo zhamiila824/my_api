@@ -2,4 +2,9 @@
 
 {% block content %}
     <h1>WELCOME</h1>
+{% for g.user.role in [0,1] %}
+            <h2><a href="users/users.html">Users</a></h2>
+
+    {% endfor %}
+    <h2><a href="products/products.html">Products</a></h2>
 {% endblock %}

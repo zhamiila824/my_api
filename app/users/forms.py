@@ -17,17 +17,12 @@ class RegisterForm(Form):
         validators.EqualTo('password', message='Passwords must match')
     ])
     accept_tou = BooleanField('I agree to Terms of Use', [validators.DataRequired()])
-
-
-class UserEditForm(Form):
-    username = StringField('New Username:')
-    email = EmailField('New Email:', [validators.Email()])
-    role = RadioField('New Role:', choices=[('0', 'admin'),
-                                            ('1', 'staff'),
-                                            ('2', 'user')])
-    status = RadioField('New Status:', choices=[('0', 'inactive'),
-                                                ('1', 'new'),
-                                                ('2', 'active')])
+    role = RadioField('New Role:', [validators.DataRequired()], choices=[('0', 'admin'),
+                                                                         ('1', 'staff'),
+                                                                         ('2', 'user')],)
+    status = RadioField('New Status:',  [validators.DataRequired()], choices=[('0', 'inactive'),
+                                                                              ('1', 'new'),
+                                                                              ('2', 'active')])
 
 
 class UserSearchForm(Form):
