@@ -2,7 +2,7 @@ from app import db
 from app.products import constants as PRODUCT
 
 
-class Products(db.Model):
+class Product(db.Model):
 
     __tablename__ = 'productsPositive'
     id = db.Column(db.Integer, primary_key=True)
