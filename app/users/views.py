@@ -30,7 +30,7 @@ def login():
         if user and check_password_hash(user.password, form.password.data):
             # session can't be modified as it signed, safe place to store user id
             session['user_id'] = user.id
-            flash('Welcome %s' % user.name)
+            flash('Welcome %s' % user.username)
             return redirect(url_for('users.home'))
         flash('Wrong email or password', 'error-message')
     return render_template("users/login.html", form=form)
@@ -58,8 +58,6 @@ def register():
         # redirect user to the 'home' method of user module
         return redirect(url_for('users.home'))
     return render_template("users/register.html", form=form)
-
-# TODO Log out
 
 
 def save_changes(user, form, new=False):
@@ -132,3 +130,10 @@ def delete(user_id):
             return redirect('/')
         return render_template('users/delete_user.html', form=form)
     return 'Error deleting #{id}'.format(id=user_id)
+
+
+@users.route("/logout")
+def logout():
+    """Clear the current session, including the stored user id."""
+    session.clear()
+    return redirect(url_for("home"))
