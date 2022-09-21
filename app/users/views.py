@@ -1,7 +1,7 @@
 from flask import Blueprint, request, render_template, flash, g, session, redirect, url_for
 from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
-from app.users.forms import RegisterForm, LoginForm
+from app.users.forms import RegisterForm, LoginForm, UserForm
 from app.users.models import User
 from app.users.decorators import requires_login
 from app.users.tables import UsersTable
@@ -59,7 +59,7 @@ def register():
         return redirect(url_for('users.home'))
     return render_template("users/register.html", form=form)
 
-
+# TODO fix save changes
 def save_changes(user, form, new=False):
     """
     Save the changes to the database
@@ -71,10 +71,8 @@ def save_changes(user, form, new=False):
     user.status = form.status.data
     if new:
         # Add the new user to the database
-        print('db.session.add(user)')
         db.session.add(user)
     # commit the data to the database
-    print('db.session.commit()')
     db.session.commit()
 
 
@@ -83,11 +81,14 @@ def edit(user_id):
     qry = db.session.query(User).filter(User.id == user_id)
     user = qry.first()
     if user:
-        form = RegisterForm(formdata=request.form, obj=user)
+        form = UserForm(formdata=request.form, obj=user)
+        print('before1 save')
         if request.method == 'POST' and form.validate():
+            print('before2 save')
             save_changes(user, form)
+            print('after save')
             flash('User updated successfully!')
-            return redirect(url_for('users.edit(user_id)'))
+            return redirect(url_for('users.edit', user_id=user_id))
         return render_template("users/edit_user.html", form=form)
     return render_template('404.html'), 404
 

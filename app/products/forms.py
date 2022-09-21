@@ -6,4 +6,4 @@ class ProductForm(Form):
     product_name = StringField('Title:', [validators.DataRequired()])
     price = FloatField('Price:', [validators.DataRequired()])
     quantity = IntegerField('Quantity:', [validators.DataRequired()])
-    status = RadioField('Status:', choices=[('0', 'draft'), ('1', 'active'), [validators.DataRequired()]])
+    status = RadioField('Status:', [validators.DataRequired()], choices=[('0', 'draft'), ('1', 'active')])

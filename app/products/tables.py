@@ -7,5 +7,5 @@ class ProductsTable(Table):
     price = Col('Price')
     quantity = Col('Quantity')
     status = Col('Status')
-    # edit = LinkCol('Edit', 'products.edit', url_kwargs=dict(product_id='id'))
+    edit = LinkCol('Edit', 'products.edit', url_kwargs=dict(product_id='id'))
     # delete = LinkCol('Delete', 'products.delete', url_kwargs=dict(product_id='id'))

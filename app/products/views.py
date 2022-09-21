@@ -9,7 +9,7 @@ products = Blueprint('products', __name__, url_prefix='/products')
 
 
 @products.route("/")
-def all_products():
+def home():
     qry = db.session.query(Product)
     products_result = qry.all()
     if not products_result:
@@ -23,17 +23,48 @@ def all_products():
 @products.route('/add/', methods=['GET', 'POST'])
 def add_product():
     form = ProductForm(request.form)
-
-    print('here')
     if request.method == 'POST' and form.validate():
+        # create product instance, but not store in database yet
         product = Product(product_name=form.product_name.data, price=form.price.data,
                           quantity=form.quantity.data, status=form.status.data)
+        # insert record in database and commit
         db.session.add(product)
         db.session.commit()
-        flash('Product added')
-        return redirect(url_for('products.all_products'))
-    print('here')
+
+        flash('Product added!')
+        # redirect user to the 'home' method of user module
+        return redirect(url_for('products.home'))
     return render_template("products/add_product.html", form=form)
-# TODO Edit product
+
+# TODO fix save changes
+def save_changes(product, form, new=False):
+    """
+    Save the changes to the database
+    """
+    product = Product()
+    product.product_name = form.product_name.data
+    product.price = form.price.data
+    product.quantity = form.quantity.data
+    product.status = form.status.data
+    if new:
+        # Add the new product to the database
+        db.session.add(product)
+    # commit the data to the database
+    db.session.commit()
+
+
+@products.route('/<product_id>/', methods=['GET', 'POST'])
+def edit(product_id):
+    qry = db.session.query(Product).filter(Product.id == product_id)
+    product = qry.first()
+    if product:
+        form = ProductForm(formdata=request.form, obj=product)
+        if request.method == 'POST' and form.validate():
+            save_changes(product, form)
+            flash('Product updated successfully!')
+            return redirect(url_for('products.edit(product_id)'))
+        return render_template("products/edit_product.html", form=form)
+    return render_template('404.html'), 404
+
 # TODO Search product
 # TODO Delete product
