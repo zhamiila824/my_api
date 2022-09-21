@@ -37,7 +37,7 @@ def add_product():
     return render_template("products/add_product.html", form=form)
 
 # TODO fix save changes
-def save_changes(product, form, new=False):
+def save_changes(form, new=False):
     """
     Save the changes to the database
     """
@@ -60,9 +60,9 @@ def edit(product_id):
     if product:
         form = ProductForm(formdata=request.form, obj=product)
         if request.method == 'POST' and form.validate():
-            save_changes(product, form)
+            save_changes(form)
             flash('Product updated successfully!')
-            return redirect(url_for('products.edit(product_id)'))
+            return redirect(url_for('products.edit', product_id=product_id))
         return render_template("products/edit_product.html", form=form)
     return render_template('404.html'), 404
 
