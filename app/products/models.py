@@ -4,7 +4,7 @@ from app.products import constants as PRODUCT
 
 class Product(db.Model):
 
-    __tablename__ = 'productsPositive'
+    __tablename__ = "productsPositive"
     id = db.Column(db.Integer, primary_key=True)
     product_name = db.Column(db.String(255))
     price = db.Column(db.Float)
@@ -20,4 +20,4 @@ class Product(db.Model):
         return PRODUCT.STATUS[self.status]
 
     def __repr__(self):
-        return '<Product: %r>' % self.product_name
+        return "<Product: %r>" % self.product_name

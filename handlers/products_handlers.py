@@ -1,5 +1,11 @@
 from flask import request
-from helpers.db_queries import show_products, get_product, add_product, search_product, delete_product
+from helpers.db_queries import (
+    show_products,
+    get_product,
+    add_product,
+    search_product,
+    delete_product,
+)
 
 
 def show():
@@ -28,4 +34,3 @@ def search():
 def delete():
     delete_product(request)
     return "Successfully deleted"
-

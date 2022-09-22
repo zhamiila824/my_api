@@ -2,6 +2,6 @@
 DRAFT = 0
 ACTIVE = 1
 STATUS = {
-    DRAFT: 'draft',
-    ACTIVE: 'active',
+    DRAFT: "draft",
+    ACTIVE: "active",
 }
