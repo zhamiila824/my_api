@@ -86,7 +86,6 @@ def edit(user_id):
     user = qry.first()
     if user:
         form = UserForm(formdata=request.form, obj=user)
-        print("before1 save")
         if request.method == "POST" and form.validate():
             User.query.filter_by(id=user_id).update(
                 dict(
