@@ -32,12 +32,9 @@ def login():
     if g.user:
         return redirect(url_for("users.home"))
     form = LoginForm(request.form)
-    # checking that data is valid (except password)
     if request.method == "POST" and form.validate():
         user = User.query.filter_by(email=form.email.data).first()
-        # validate password with werzeug.security
         if user and check_password_hash(user.password, form.password.data):
-            # session can't be modified as it signed, safe place to store user id
             session["user_id"] = user.id
             flash("Welcome %s" % user.username)
             return redirect(url_for("users.home"))
@@ -60,7 +57,6 @@ def register():
             email=form.email.data,
             password=generate_password_hash(form.password.data),
         )
-        # insert record in database and commit
         db.session.add(user)
         db.session.commit()
 
@@ -72,14 +68,7 @@ def register():
     return render_template("users/register.html", form=form)
 
 
-# TODO fix save changes
 def save_changes(user_id, form, new=False):
-    """
-    Save the changes to the database
-    """
-    from sqlalchemy import update
-
-    # commit the data to the database
     User.query.filter_by(id=user_id).update(
         dict(
             username=form.username.data,
@@ -88,13 +77,6 @@ def save_changes(user_id, form, new=False):
             status=form.status.data,
         )
     )
-    # db.session.commit()
-    # update(User).where(User.id == user_id).values(
-    #     username=form.username.data,
-    #     email=form.email.data,
-    #     role=form.role.data,
-    #     status=form.status.data,
-    # )
     db.session.commit()
 
 
@@ -138,6 +120,8 @@ def all_users():
         flash("No users found!")
         return redirect("/users/")
     table = UsersTable(users_result)
+    print(users_result)
+    print(UsersTable(users_result))
     table.border = True
     return render_template("users/users.html", table=table)
 

@@ -1,5 +1,6 @@
 from flask_table import Table, Col, LinkCol
 from app.users.constants import STATUS, ROLE
+from app.users.models import User
 
 
 class UsersTable(Table):
